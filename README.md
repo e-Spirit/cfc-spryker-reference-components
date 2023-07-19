@@ -1,0 +1,1 @@
+# cfc-spryker-reference-components
