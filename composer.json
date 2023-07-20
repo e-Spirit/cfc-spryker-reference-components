@@ -1,4 +1,12 @@
 {
     "name": "ecom-espirit/cfc-spryker-reference-components",
+    "description": "FirstSpirit CMS Reference Components for Spryker",
+    "type": "library",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "Crownpeak\\": "src/Crownpeak/"
+        }
+    },
     "require": {}
 }
