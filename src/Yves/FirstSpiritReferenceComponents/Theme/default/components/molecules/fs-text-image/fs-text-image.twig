@@ -1,0 +1,36 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-text-image'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+{# {% block attributes %}
+    {% if data.fsBlockData.previewId is defined %} data-preview-id="{{ data.fsBlockData.previewId }}"{% endif %}
+    {% if data.fsBlockData.picture.position is defined %} data-variant="{{ data.fsBlockData.picture.position }}"{% endif %}
+    {% if data.fsBlockData.variantEditorName is defined %} data-variant-editor-name="{{ data.fsBlockData.variantEditorName }}"{% endif %}
+{% endblock %} #}
+
+{% block body %}
+    <div class="container">
+        <div class="grid grid--justify grid--middle">
+            <div class="col col--lg-12 col--md-12 col--sm-12">
+                <h3 style="text-align: center; margin-bottom: 50px">{{ data.fsBlockData.data.st_headline | raw }}</h3>
+                <div class="fs-text-image-container">
+                    {% if data.fsBlockData.data.st_image %}
+                        {% if data.fsBlockData.data.st_image.resolutions | first %}
+                            <img src="{{ (data.fsBlockData.data.st_image.resolutions | first).url }}"
+                                style="float:{{ data.fsBlockData.data.st_variant.key | replace({'image-': ''}) }}; width:55%; margin-right: 2rem;"
+                                {% if  data.fsBlockData.data.st_image.previewId is defined %}data-preview-id="{{ data.fsBlockData.data.st_image.previewId }}"{% endif %}
+                                data-tpp-context-image-resolution="CONTENT_IMAGE">
+                        {% endif %}
+                    {% endif %}
+                    {{ data.fsBlockData.data.st_text[0].content[0].content | raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

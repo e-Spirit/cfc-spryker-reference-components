@@ -1,0 +1,17 @@
+.fs-text-image ul {
+  list-style: disc;
+}
+
+.fs-text-image ol {
+  list-style: decimal;
+}
+
+.fs-text-image ul, .fs-text-image ol {
+  list-style-position: inside;
+}
+
+.fs-text-image {
+  img {
+    float: left;
+  }
+}
