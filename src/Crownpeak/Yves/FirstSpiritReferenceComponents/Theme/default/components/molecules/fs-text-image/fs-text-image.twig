@@ -28,7 +28,13 @@
                                 data-tpp-context-image-resolution="CONTENT_IMAGE">
                         {% endif %}
                     {% endif %}
-                    {{ data.fsBlockData.data.st_text[0].content[0].content | raw }}
+                    {# {% for c in data.fsBlockData.data.st_text %}
+                            {% for c2 in c.content %}
+                                    <p>{{ c2.content | json_encode() }}</p>
+                            {% endfor %}
+                    {% endfor %} #}
+                    <hr>
+                    {{ firstSpiritRichText (data.fsBlockData.data.st_text) | raw }}
                 </div>
             </div>
         </div>
