@@ -1,0 +1,21 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-data-visualizer'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+{% block body %}
+    <div class="container">
+        <div class="grid grid--justify grid--middle">
+            <div class="col col--lg-12 col--md-12 col--sm-12">
+                <code>
+                    {{data.fsBlockData | json_encode() | raw}}
+                </code>
+            </div>
+        </div>
+    </div>
+{% endblock %}
