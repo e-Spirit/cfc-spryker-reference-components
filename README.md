@@ -1,12 +1,12 @@
 # cfc-spryker-reference-components
-`FirstSpirit Preview Reference Components for Spryker`
+This module is part of the FirstSpirit Connect for Commerce Spryker integration.
+It contains the implementation of the components included in the Connect for Commerce reference project.
 
 ## Installation
-**Composer**
 
 Add the following to your `composer.json` file
-```
-"repositories": [
+```json
+    "repositories": [
         {
             "url": "https://github.com/ecom-espirit/cfc-spryker-reference-components.git",
             "type": "vcs"
