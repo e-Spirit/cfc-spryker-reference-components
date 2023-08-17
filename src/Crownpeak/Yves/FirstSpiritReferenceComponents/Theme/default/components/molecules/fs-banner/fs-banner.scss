@@ -1,0 +1,77 @@
+.fs-banner {
+  margin: 0;
+  width: 100%;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: flex;
+  position: relative;
+
+  a {
+    display: contents;
+  }
+  img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  figcaption,
+  hgroup,
+  hgroup * {
+    margin: 0;
+    padding: 0;
+    line-height: 1.3;
+  }
+
+  hgroup {
+    h2 {
+      text-align: left;
+      font-size: 2.5em;
+      font-weight: bold;
+    }
+    h3 {
+      text-align: left;
+      font-size: 1.5em;
+      font-weight: normal;
+    }
+  }
+
+  figcaption {
+    position: absolute;
+    top: 20%;
+    width: 80%;
+    padding: 1em;
+    background: rgba(255, 255, 255, 0.3);
+    color: #333;
+    pointer-events: none;
+  }
+
+  [data-variant^='center'] figcaption {
+    padding: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: none;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    text-shadow: 1px 1px rgba(255, 255, 255, 0.3);
+  }
+  [data-variant^='right'] figcaption {
+    top: auto;
+    bottom: 3em;
+    right: 0;
+  }
+  [data-variant^='right'] hgroup h2,
+  [data-variant^='right'] hgroup h3 {
+    text-align: right;
+  }
+
+  [data-variant$='light'] figcaption {
+    background: rgba(0, 0, 0, 0.3);
+    color: #eee;
+  }
+  [data-variant='center-light'] figcaption {
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+  }
+}
