@@ -6,6 +6,22 @@
   display: flex;
   position: relative;
 
+  figure {
+    max-height: 400px;
+    width: 100%;
+  }
+
+  .caption-container {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
   a {
     display: contents;
   }
@@ -38,7 +54,6 @@
 
   figcaption {
     position: absolute;
-    top: 20%;
     width: 80%;
     padding: 1em;
     background: rgba(255, 255, 255, 0.3);
@@ -48,7 +63,6 @@
 
   [data-variant^='center'] figcaption {
     padding: 0;
-    top: 0;
     width: 100%;
     height: 100%;
     background: none;
@@ -58,8 +72,6 @@
     text-shadow: 1px 1px rgba(255, 255, 255, 0.3);
   }
   [data-variant^='right'] figcaption {
-    top: auto;
-    bottom: 3em;
     right: 0;
   }
   [data-variant^='right'] hgroup h2,

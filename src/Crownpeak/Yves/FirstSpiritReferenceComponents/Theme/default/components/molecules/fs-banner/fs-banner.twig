@@ -22,7 +22,7 @@
             {% if data.fsBlockData.data.st_link is not null %}
                 <a href="{{ data.fsBlockData.data.st_link.data.lt_linkUrl }}" {% if data.fsBlockData.data.st_link.template == "external_link" %} target="_blank" {% endif %}>
             {% endif %}
-            
+
 
             <picture
                     data-preview-id="{{ data.fsBlockData.data.st_image.previewId }}"
@@ -31,24 +31,26 @@
                     <source srcset="{{resolution.url}}" media="(max-width: {{resolution.width}}px)" />
                 {% endfor %}
 
-                
+
                 <img src="{{ data.fsBlockData.data.st_image.resolutions.ORIGINAL.url }}"
                      alt="{% if data.fsBlockData.data.st_image_alt_text is not null %}{{data.fsBlockData.data.st_image_alt_text}}{% endif %}" />
             </picture>
-            
+
             {% if data.fsBlockData.data.st_link is not null %}</a>{% endif %}
 
             {% if (data.fsBlockData.data.st_title is not empty) or (data.fsBlockData.data.st_subtitle is not empty) %}
-                <figcaption>
-                    <hgroup>
-                        {% if data.fsBlockData.data.st_title is not empty %}
-                            <h2>{{ data.fsBlockData.data.st_title | raw}}</h2>
-                        {% endif %}
-                        {% if data.fsBlockData.data.st_subtitle is not empty %}
-                            <h3>{{ data.fsBlockData.data.st_subtitle | raw}}</h3>
-                        {% endif %}
-                    </hgroup>
-                </figcaption>
+                <div class="caption-container">
+                    <figcaption>
+                        <hgroup>
+                            {% if data.fsBlockData.data.st_title is not empty %}
+                                <h2>{{ data.fsBlockData.data.st_title | raw}}</h2>
+                            {% endif %}
+                            {% if data.fsBlockData.data.st_subtitle is not empty %}
+                                <h3>{{ data.fsBlockData.data.st_subtitle | raw}}</h3>
+                            {% endif %}
+                        </hgroup>
+                    </figcaption>
+                </div>
             {% endif %}
         </figure>
     </div>
