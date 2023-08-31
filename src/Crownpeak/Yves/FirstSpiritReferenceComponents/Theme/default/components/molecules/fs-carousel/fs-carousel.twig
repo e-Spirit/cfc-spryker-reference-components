@@ -13,13 +13,13 @@
     {% if data.fsBlockData.data.st_items is defined %}
         {% if data.fsBlockData.data.st_items|length > 1 %}
             <div class="fs-banner-carousel">
-            <div class="fs-carousel-container" style="max-height: 33vh;" onscroll="this.dataset.index = Math.round(this.scrollLeft / this.offsetWidth)"
+            <div class="fs-carousel-container" onscroll="this.dataset.index = Math.round(this.scrollLeft / this.offsetWidth)"
             data-preview-id="#st_items">
         {% else %}
             <div data-preview-id="#st_items">
         {% endif %}
         {% for item in data.fsBlockData.data.st_items %}
-            {% include molecule('fs-banner', 'FirstSpiritReferenceComponents') with { data: { fsBlockData: item } } only %}
+            {% include molecule('fs-banner', 'Crownpeak:FirstSpiritReferenceComponents') with { data: { fsBlockData: item } } only %}
         {% endfor %}
         {% if data.fsBlockData.data.st_items|length == 1 %}
             </div>
@@ -42,8 +42,8 @@
                         const container = document.currentScript.parentElement.querySelector('.fs-carousel-container');
                         if (container) {
                             let timerId = setInterval(function () {
-                                container.scrollLeft = container.scrollLeft >= (container.querySelectorAll('figure.fs-banner').length - 1) * container.offsetWidth ? 0 : container.scrollLeft + container.offsetWidth;
-                            }, {{ data.fsBlockData.data.st_autoplay }});
+                                container.scrollLeft = container.scrollLeft >= (container.querySelectorAll('fs-banner').length - 1) * container.offsetWidth ? 0 : container.scrollLeft + container.offsetWidth;
+                            }, {{ data.fsBlockData.data.st_autoplay.key ?? 0 }});
                             container.addEventListener('mousedown', function () {
                                 clearInterval(timerId);
                             }, {once: true});
