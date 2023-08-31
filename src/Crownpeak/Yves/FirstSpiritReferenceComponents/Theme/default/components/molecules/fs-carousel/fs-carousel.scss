@@ -1,0 +1,82 @@
+.fs-banner-carousel {
+  position: relative;
+}
+.fs-carousel-container {
+  display: flex;
+  scroll-snap-type: x mandatory;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+}
+
+.fs-carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.fs-next-item,
+.fs-prev-item {
+  position: absolute;
+  top: 25%;
+  width: 10%;
+  height: 50%;
+  cursor: pointer;
+}
+.fs-next-item {
+  right: 0;
+}
+.fs-prev-item {
+  left: 0;
+}
+
+.fs-carousel-bullets {
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+.fs-carousel-bullet {
+  width: 1em;
+  height: 1em;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.9);
+  color: rgba(0, 0, 0, 0.9);
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 255, 255, 1);
+  margin: 0 0.5em 1em;
+  border-radius: 50%;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+[data-index='0'] .fs-carousel-bullet:nth-child(1),
+[data-index=''] .fs-carousel-bullet:nth-child(1),
+.fs-carousel-container:not([data-index]) .fs-carousel-bullet:nth-child(1) {
+  background-color: currentColor;
+}
+[data-index='1'] .fs-carousel-bullet:nth-child(2) {
+  background-color: currentColor;
+}
+[data-index='2'] .fs-carousel-bullet:nth-child(3) {
+  background-color: currentColor;
+}
+[data-index='3'] .fs-carousel-bullet:nth-child(4) {
+  background-color: currentColor;
+}
+[data-index='4'] .fs-carousel-bullet:nth-child(5) {
+  background-color: currentColor;
+}
+[data-index='5'] .fs-carousel-bullet:nth-child(6) {
+  background-color: currentColor;
+}
+[data-index='6'] .fs-carousel-bullet:nth-child(7) {
+  background-color: currentColor;
+}
+[data-index='7'] .fs-carousel-bullet:nth-child(8) {
+  background-color: currentColor;
+}
+[data-index='8'] .fs-carousel-bullet:nth-child(9) {
+  background-color: currentColor;
+}
+[data-index='9'] .fs-carousel-bullet:nth-child(10) {
+  background-color: currentColor;
+}
