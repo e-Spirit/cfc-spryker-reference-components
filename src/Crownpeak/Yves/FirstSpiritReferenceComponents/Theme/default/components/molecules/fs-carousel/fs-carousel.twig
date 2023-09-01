@@ -19,6 +19,9 @@
             <div data-preview-id="#st_items">
         {% endif %}
         {% for item in data.fsBlockData.data.st_items %}
+            {% if data.fsBlockData.data.st_items|length > 1 %}
+                {% set item = item|merge({'index': loop.index0}) %}
+            {% endif %}
             {% include molecule('fs-banner', 'Crownpeak:FirstSpiritReferenceComponents') with { data: { fsBlockData: item } } only %}
         {% endfor %}
         {% if data.fsBlockData.data.st_items|length == 1 %}
