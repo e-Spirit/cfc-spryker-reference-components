@@ -13,8 +13,11 @@
     {% if data.fsBlockData.data.st_items is defined %}
         {% if data.fsBlockData.data.st_items|length > 1 %}
             <div class="fs-banner-carousel">
-            <div class="fs-carousel-container" onscroll="this.dataset.index = Math.round(this.scrollLeft / this.offsetWidth)"
-            data-preview-id="#st_items">
+            <div class="fs-carousel-container"
+            onscroll="this.dataset.index = Math.round(this.scrollLeft / this.offsetWidth)"
+            data-preview-id="#st_items"
+            {% if  data.fsBlockData.data.st_autoplay.key is defined %} data-autoplay-interval="{{ data.fsBlockData.data.st_autoplay.key }}"{% endif %}
+            >
         {% else %}
             <div data-preview-id="#st_items">
         {% endif %}
@@ -26,7 +29,7 @@
         {% endfor %}
         {% if data.fsBlockData.data.st_items|length == 1 %}
             </div>
-            {% elseif data.fsBlockData.data.st_items|length > 1 %}
+        {% elseif data.fsBlockData.data.st_items|length > 1 %}
             <div class="fs-next-item" onclick="this.parentElement.scrollLeft += this.parentElement.offsetWidth"></div>
             <div class="fs-prev-item" onclick="this.parentElement.scrollLeft -= this.parentElement.offsetWidth"></div>
 
@@ -37,24 +40,6 @@
                 {% endfor %}
             </div>
             </div>
-
-        {% if data.fsBlockData.data.st_autoplay is defined and data.fsBlockData.data.st_autoplay is not empty %}
-            <script>
-                (function () {
-                    if (document.currentScript) {
-                        const container = document.currentScript.parentElement.querySelector('.fs-carousel-container');
-                        if (container) {
-                            let timerId = setInterval(function () {
-                                container.scrollLeft = container.scrollLeft >= (container.querySelectorAll('fs-banner').length - 1) * container.offsetWidth ? 0 : container.scrollLeft + container.offsetWidth;
-                            }, {{ data.fsBlockData.data.st_autoplay.key ?? 0 }});
-                            container.addEventListener('mousedown', function () {
-                                clearInterval(timerId);
-                            }, {once: true});
-                        }
-                    }
-                })();
-            </script>
-        {% endif %}
             </div>
         {% endif %}
     {% endif %}
