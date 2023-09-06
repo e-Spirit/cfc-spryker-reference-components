@@ -1,0 +1,46 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-carousel',
+    tag: 'fs-carousel'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+{% block body %}
+    {% if data.fsBlockData.data.st_items is defined %}
+        {% if data.fsBlockData.data.st_items|length > 1 %}
+            <div class="fs-banner-carousel">
+            <div class="fs-carousel-container"
+            onscroll="this.dataset.index = Math.round(this.scrollLeft / this.offsetWidth)"
+            data-preview-id="#st_items"
+            {% if  data.fsBlockData.data.st_autoplay.key is defined %} data-autoplay-interval="{{ data.fsBlockData.data.st_autoplay.key }}"{% endif %}
+            >
+        {% else %}
+            <div data-preview-id="#st_items">
+        {% endif %}
+        {% for item in data.fsBlockData.data.st_items %}
+            {% if data.fsBlockData.data.st_items|length > 1 %}
+                {% set item = item|merge({'index': loop.index0}) %}
+            {% endif %}
+            {% include molecule('fs-banner', 'Crownpeak:FirstSpiritReferenceComponents') with { data: { fsBlockData: item } } only %}
+        {% endfor %}
+        {% if data.fsBlockData.data.st_items|length == 1 %}
+            </div>
+        {% elseif data.fsBlockData.data.st_items|length > 1 %}
+            <div class="fs-next-item" onclick="this.parentElement.scrollLeft += this.parentElement.offsetWidth"></div>
+            <div class="fs-prev-item" onclick="this.parentElement.scrollLeft -= this.parentElement.offsetWidth"></div>
+
+            <div class="fs-carousel-bullets"
+                 onclick="event.target.matches('.fs-carousel-bullet') &amp;&amp; (this.parentElement.scrollLeft = this.parentElement.offsetWidth * [].slice.call(this.children).indexOf(event.target))">
+                {% for item in data.fsBlockData.data.st_items %}
+                    <div class="fs-carousel-bullet"></div>
+                {% endfor %}
+            </div>
+            </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
