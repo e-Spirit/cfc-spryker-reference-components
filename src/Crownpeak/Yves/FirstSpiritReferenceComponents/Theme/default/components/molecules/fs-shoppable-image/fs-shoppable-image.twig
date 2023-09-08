@@ -1,0 +1,71 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-shoppable-image',
+    tag: 'fs-shoppable-image'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="grid grid--justify grid--middle grid--spaced-lg">
+            <div class="col col--lg-12 col--md-12 col--sm-12">
+                {% if data.fsBlockData.data.st_interactive_image.media %}
+                    <div class="text-container">
+                        {% if data.fsBlockData.data.st_headline is not null %}
+                            <h3 style="text-align: center; margin-bottom: 50px">{{ data.fsBlockData.data.st_headline | raw }}</h3>
+                        {% endif %}
+                        {% if data.fsBlockData.data.st_text is not null %}
+                            {{ firstSpiritRichText (data.fsBlockData.data.st_text) | raw }}
+                        {% endif %}
+                    </div>
+                    <div id="hotspot" class="hotspot-container">
+                        <img class="img-responsive"
+                            {% if  data.fsBlockData.data.st_interactive_image.media.previewId is defined %} data-preview-id="{{ data.fsBlockData.data.st_interactive_image.media.previewId }}"{% endif %}
+                             data-tpp-context-image-resolution="CONTENT_IMAGE"
+                             src="{{ data.fsBlockData.data.st_interactive_image.media.resolutions.ORIGINAL.url }}"
+                            {% if data.fsBlockData.data.st_image_alt_text is not null %}
+                             alt="{{ data.fsBlockData.data.st_image_alt_text }}">
+                        {% endif %}>
+                        <div id="hotspot-overlay" class="overlays fs-theme">
+                            {% for area in data.fsBlockData.data.st_interactive_image.areas %}
+                                {% set imgWidth =  data.fsBlockData.data.st_interactive_image.media.resolutions.ORIGINAL.width %}
+                                {% set imgHeight =  data.fsBlockData.data.st_interactive_image.media.resolutions.ORIGINAL.height %}
+                                {% set pointYPercentage = (area.leftTop.y / imgHeight) * 100 %}
+                                {% set pointXPercentage = (area.leftTop.x / imgWidth) * 100 %}
+                                <div class="overlay"
+                                     style="top: {{ pointYPercentage }}%; left:{{ pointXPercentage }}%;">
+                                    <div id="p{{ data.fsBlockData.id }}" class="product
+								{% if pointYPercentage < 50 %}
+									q-top
+								{% else %}
+									q-bottom
+								{% endif %}
+								{% if pointXPercentage < 50 %}
+									q-left
+								{% else %}
+									q-right
+								{% endif %}">
+                                        <a href="#poi" class="close-thin"></a>
+                                        {% if area.link.data.lt_product is not null %}
+                                            {% include molecule('fs-product-flyout', 'Crownpeak:FirstSpiritReferenceComponents') with { data: { fsBlockData: area } } only %}
+                                        {% else %}
+                                            <div style="width:200px; background-color: white">
+                                                <p style="color:red">There is no product selected</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <a class="poi" href="#p{{ data.fsBlockData.id }}"></a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
