@@ -1,0 +1,46 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-product-flyout',
+    tag: 'fs-product-flyout'
+} %}
+
+{% define data = {
+    fsBlockData: [],
+} %}
+
+{% block body %}
+    {% if data.fsBlockData is not empty %}
+        {% set productData = firstSpiritProductData(data.fsBlockData.link.data.lt_product.value[0].identifier) %}
+        <div class="product-flyout">
+            {% if data.fsBlockData.link.data.lt_headline is not null %}
+                <div class="product-title">
+                    <strong>{{ data.fsBlockData.link.data.lt_headline }}</strong>
+                </div>
+            {% elseif productData.name is not null %}
+                <div class="product-title">
+                    <strong>{{ productData.name }}</strong>
+                </div>
+            {% endif %}
+            {% if productData.images is defined %}
+                <div class="product-image">
+                    <img src="{{ productData.images.offsetGet(0).externalUrlLarge }}"/>
+                </div>
+            {% endif %}
+            {% if productData.description is not null %}
+
+                <p class="product-description">{{ productData.description | length > 250 ? productData.description | slice(0, 250) ~ '...' : productData.description }}</p>
+            {% endif %}
+            {%- if productData.url is not null -%}
+            <a href="{{ productData.url }}" class="button button--hollow button--inspirational button--expand-mobile">
+                {%- endif -%}
+                SHOP IT!
+                {%- if productData.url is not null -%}
+            </a>
+            {%- endif -%}
+        </div>
+        <script>
+            console.log('###', {{productData | json_encode() | raw}})
+        </script>
+    {% endif %}
+{% endblock %}
