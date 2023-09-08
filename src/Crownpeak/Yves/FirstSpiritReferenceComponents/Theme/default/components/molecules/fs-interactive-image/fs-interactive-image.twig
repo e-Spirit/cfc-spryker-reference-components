@@ -30,7 +30,7 @@
                              src="{{ data.fsBlockData.data.st_interactive_image.media.resolutions.ORIGINAL.url }}"
                             {% if data.fsBlockData.data.st_image_alt_text is not null %}
                              alt="{{ data.fsBlockData.data.st_image_alt_text }}">
-                        {% endif %}>
+                        {% endif %}
                         <div id="hotspot-overlay" class="overlays fs-theme">
                             {% for area in data.fsBlockData.data.st_interactive_image.areas %}
                                 {% set imgWidth =  data.fsBlockData.data.st_interactive_image.media.resolutions.ORIGINAL.width %}
@@ -39,7 +39,7 @@
                                 {% set pointXPercentage = (area.leftTop.x / imgWidth) * 100 %}
                                 <div class="overlay"
                                      style="top: {{ pointYPercentage }}%; left:{{ pointXPercentage }}%;">
-                                    <div id="p{{ data.fsBlockData.id }}" class="product
+                                    <div id="p{{ data.fsBlockData.id }}-{{loop.index}}" class="product
 								{% if pointYPercentage < 50 %}
 									q-top
 								{% else %}
@@ -59,7 +59,7 @@
                                             </div>
                                         {% endif %}
                                     </div>
-                                    <a class="poi" href="#p{{ data.fsBlockData.id }}"></a>
+                                    <a class="poi" href="#p{{ data.fsBlockData.id }}-{{loop.index}}"></a>
                                 </div>
                             {% endfor %}
                         </div>
