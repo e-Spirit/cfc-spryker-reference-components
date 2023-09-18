@@ -1,0 +1,1 @@
+import './fs-multi-slot-container.scss';

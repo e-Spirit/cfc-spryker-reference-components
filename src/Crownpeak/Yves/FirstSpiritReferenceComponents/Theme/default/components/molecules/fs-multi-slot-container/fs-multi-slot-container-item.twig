@@ -1,0 +1,86 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-n-teaser-item',
+    tag: 'article'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+
+
+{% block body %}
+    {% if data.fsBlockData.link is defined %}
+        {% set url -%}
+            {%- include template('link', 'FirstSpiritPreview') with {link:data.fsBlockData.link} -%}
+        {%- endset %}
+        {% set target %}
+            {% if data.fsBlockData.link.type is defined and data.fsBlockData.link.type == "external" %} target="_blank"{% endif %}
+        {%- endset %}
+        {% set title %}
+            {% if data.fsBlockData.link.text is defined and data.fsBlockData.link.text is not empty %} title="{{ data.fsBlockData.link.text | raw }}"{% endif %}
+        {%- endset %}
+    {% endif %}
+    {% if data.fsBlockData.picture is defined and data.fsBlockData.picture is not empty %}
+    <div class="fs-n-teaser-image">
+        <figure>
+            {% if url is defined %}
+                <a
+                        href="{{ url }}"
+                        {{ target }}
+                        {{ title }}>
+            {% else %}
+                <span>
+            {% endif %}
+                <img src="{{ data.fsBlockData.picture.imageUrl }}"
+                     {% if  data.fsBlockData.picture.previewId is defined %} data-preview-id="{{ data.fsBlockData.picture.previewId }}"{% endif %}
+                     {% if  data.fsBlockData.picture.description is defined and data.fsBlockData.picture.description is not null %} alt="{{ data.fsBlockData.picture.description }}"{% endif %}
+                     data-tpp-context-image-resolution="TEASER_IMAGE">
+            {% if url is not defined %}
+                </span>
+            {% else %}
+                </a>
+            {% endif %}
+        </figure>
+    </div>
+    {% endif %}
+    <div class="fs-n-teaser-content">
+        {% if data.fsBlockData.headline is defined and data.fsBlockData.headline is not empty %}
+            <h3>{% if url is defined %}
+                <a
+                        href="{{ url }}"
+                        {{ target }}
+                        {{ title }}>
+                {% endif %}
+                {{ data.fsBlockData.headline | raw }}
+            {% if url is defined %}
+                </a>
+            {% endif %}
+            </h3>
+        {% endif %}
+
+        {% if data.fsBlockData.subline is defined and data.fsBlockData.subline is not empty %}
+            <h4>{{ data.fsBlockData.subline | raw }}</h4>
+        {% endif %}
+
+        {% if data.fsBlockData.teaserText is defined and data.fsBlockData.teaserText is not empty %}
+            <p>{{ data.fsBlockData.teaserText | raw }}</p>
+        {% endif %}
+
+        {% if url is defined %}
+            <a
+                    href="{{ url }}"
+                    {{ target }}
+                    class="fs-btn-link">
+                {% if data.fsBlockData.link.text is defined and data.fsBlockData.link.text is not empty %}
+                    {{ data.fsBlockData.link.text | raw }}
+                {% else %}
+                    Link
+                {% endif %}
+            </a>
+        {% endif %}
+
+    </div>
+{% endblock %}
