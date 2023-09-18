@@ -12,6 +12,7 @@
 {% block body %}
     {% if data.fsBlockData.data.st_category is defined and data.fsBlockData.data.st_category.value[0] is not empty %}
         {% set category = firstSpiritCategoryData(data.fsBlockData.data.st_category.value[0].identifier) %}   
+        
         {% if category is not null %}
 
             {% set url = category.url %}   
@@ -25,13 +26,13 @@
             {% if data.fsBlockData.data.st_subline is defined and data.fsBlockData.data.st_subline is not empty %}
                 {% set categoryTitle =  data.fsBlockData.data.st_subline %}
             {% else %}
-                {% set categoryTitle = category.title %}
+                {% set categoryTitle = category.name %}
             {% endif %}
 
             {% if data.fsBlockData.data.st_text is defined and data.fsBlockData.data.st_text is not empty %}
                 {% set categoryDescription =  data.fsBlockData.data.st_text %}
             {% else %}
-                {% set categoryDescription = category.description %}
+                {% set categoryDescription = category.metaDescription %}
             {% endif %}
             {% set categoryImage = category.image %}
             {% set hasImage = false %}
