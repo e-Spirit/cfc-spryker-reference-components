@@ -1,0 +1,94 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-n-teaser-item-category',
+    tag: 'article'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+{% block body %}
+    {% if data.fsBlockData.data.st_category is defined and data.fsBlockData.data.st_category.value[0] is not empty %}
+        {% set category = firstSpiritCategoryData(data.fsBlockData.data.st_category.value[0].identifier) %}   
+        
+        {% if category is not null %}
+
+            {% set url = category.url %}   
+            {% set hasUrl = url is not empty %}
+            {# This will use the button label as a title for all links, if empty = no title #}
+            {% set title %}
+                {% if data.fsBlockData.data.st_linkText is defined and data.fsBlockData.data.st_linkText is not empty %} title="{{ data.fsBlockData.data.st_linkText | raw }}"{% endif %}
+            {%- endset %}
+            {% set categoryName = category.name %}
+            {# Depending on the project these fields might contain duplicated information. In this case only use the FS override content #}
+            {% if data.fsBlockData.data.st_subline is defined and data.fsBlockData.data.st_subline is not empty %}
+                {% set categoryTitle =  data.fsBlockData.data.st_subline %}
+            {% else %}
+                {% set categoryTitle = category.name %}
+            {% endif %}
+
+            {% if data.fsBlockData.data.st_text is defined and data.fsBlockData.data.st_text is not empty %}
+                {% set categoryDescription =  data.fsBlockData.data.st_text %}
+            {% else %}
+                {% set categoryDescription = category.metaDescription %}
+            {% endif %}
+            {% set categoryImage = category.image %}
+            {% set hasImage = false %}
+            {% if data.fsBlockData.data.st_picture is defined and data.fsBlockData.data.st_picture is not empty %}
+                {% set hasImage = true %}
+            {% elseif categoryImage is defined and categoryImage is not empty %}
+                {% set hasImage = true %}
+            {% endif %}
+            {% if hasImage %}
+                <div class="fs-n-teaser-image">
+                    {% if hasUrl %}<a href="{{ url }}" {{ title }}>{% endif %}
+                        {% if data.fsBlockData.data.st_picture is defined and data.fsBlockData.data.st_picture is not empty %}
+                            {# Image from FS #}
+                            <picture
+                                    data-preview-id="{{ data.fsBlockData.data.st_picture.previewId }}"
+                                    data-tpp-context-image-resolution="TEASER_IMAGE">
+                                {% for resolution in data.fsBlockData.data.st_picture.resolutions %}
+                                    <source srcset="{{resolution.url}}" media="(max-width: {{resolution.width}}px)" />
+                                {% endfor %}
+
+
+                                <img src="{{ data.fsBlockData.data.st_picture.resolutions.ORIGINAL.url }}"
+                                    alt="{% if data.fsBlockData.data.st_picture.description is not null %}{{data.fsBlockData.data.st_picture.description}}{% endif %}">
+                            </picture>
+                        {% elseif categoryImage is defined and categoryImage is not null %}
+                            {# Image from Spryker #}
+                            <img src="{{ categoryImage.offsetGet(0).externalUrlLarge() }}">
+                        {% endif %}
+                    {% if hasUrl %}</a>{% endif %}
+                </div>
+            {% endif %}
+            <div class="fs-n-teaser-content">
+                {% if categoryName is not null %}
+                    <h3>
+                        {% if hasUrl %}<a href="{{ url }}" {{ title }}>{% endif %}
+                        {{ categoryName | raw }}
+                        {% if hasUrl %}</a>{% endif %}
+                    </h3>
+                {% endif %}
+                {% if categoryTitle is not null %}
+                    <h4>{{ categoryTitle | raw }}</h4>
+                {% endif %}
+                {% if categoryDescription is defined and categoryDescription is not empty %}
+                    <p>{{ categoryDescription | raw }}</p>
+                {% endif %}
+
+                {% if hasUrl %}
+                    <a href="{{ url }}" class="fs-btn-link">
+                        {% if data.fsBlockData.data.st_linkText is defined and data.fsBlockData.data.st_linkText is not empty %}
+                            {{ data.fsBlockData.data.st_linkText | raw }}
+                        {% else %}
+                            Link
+                        {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-n-teaser-item-product',
+    tag: 'article'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+
+
+{% block body %}
+    {% if data.fsBlockData.data.st_product is defined and data.fsBlockData.data.st_product.value[0] is not empty %}
+        {% set product = firstSpiritProductData(data.fsBlockData.data.st_product.value[0].identifier) %}
+        {% if product is not null %}
+            {% set url = product.url %}
+
+            {% set hasUrl = url is not empty %}
+            {# This will use the button label as a title for all links, if empty = no title #}
+            {% set title %}
+                {% if data.fsBlockData.data.st_linkText is defined and data.fsBlockData.data.st_linkText is not empty %} title="{{ data.fsBlockData.data.st_linkText | raw }}"{% endif %}
+            {%- endset %}
+            {% set productName = product.name %}
+            {% set productDescription = product.description %}
+            {% set productPrice = product.price %}
+            {% set productImage = product.images %}
+            {% set hasImage = false %}
+            {% if data.fsBlockData.data.st_picture is defined and data.fsBlockData.data.st_picture is not empty %}
+                {% set hasImage = true %}
+            {% elseif productImage is defined and productImage is not null %}
+                {% set hasImage = true %}
+            {% endif %}
+            {% if hasImage %}
+                <div class="fs-n-teaser-image">
+                    {% if hasUrl %}<a href="{{ url }}" {{ title }}>{% endif %}
+                        {% if data.fsBlockData.data.st_picture is defined and data.fsBlockData.data.st_picture is not empty %}
+                            {# Image from FS #}
+                            <picture
+                                    data-preview-id="{{ data.fsBlockData.data.st_picture.previewId }}"
+                                    data-tpp-context-image-resolution="TEASER_IMAGE">
+                                {% for resolution in data.fsBlockData.data.st_picture.resolutions %}
+                                    <source srcset="{{resolution.url}}" media="(max-width: {{resolution.width}}px)" />
+                                {% endfor %}
+
+
+                                <img src="{{ data.fsBlockData.data.st_picture.resolutions.ORIGINAL.url }}"
+                                    alt="{% if data.fsBlockData.data.st_picture.description is not null %}{{data.fsBlockData.data.st_picture.description}}{% endif %}">
+                            </picture>
+                        {% elseif productImage is defined and productImage is not null %}
+                            {# Image from Spryker #}
+                            <img src="{{ productImage.offsetGet(0).externalUrlLarge() }}">
+                        {% endif %}
+                    {% if hasUrl %}</a>{% endif %}
+                </div>
+            {% endif %}
+            <div class="fs-n-teaser-content">
+                {% if productName is not null %}
+                <h3>
+                    {% if url is not null %}
+                    <a href="{{ url }}">
+                    {% endif %}
+                        {{ productName | raw }}
+                    {% if url is not null %}
+                    </a>
+                    {% endif%}
+                </h3>
+                {% endif %}
+                {% if productPrice is not null %}
+                    <h4>{{ productPrice | money}}</h4>
+                {% endif %}
+
+                {% if productDescription is not null %}
+                    {%  if  productDescription | length > 150 %}
+                        {% set productShortDescription = "" %}
+                        {% for productSentence in productDescription | split('.', 5) %}
+                            {% if productShortDescription | length < 150 %}
+                                {% set productShortDescription = productShortDescription ~ productSentence ~ "."%}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% set productShortDescription = productDescription %}
+                    {% endif %}
+
+                    <p>{{ productShortDescription }}</p>
+                {% endif %}
+
+                {% if url is defined %}
+                    <a href="{{ url }}" class="fs-btn-link">
+                        {% if data.fsBlockData.data.st_linkText is defined and data.fsBlockData.data.st_linkText is not empty %}
+                            {{ data.fsBlockData.data.st_linkText | raw }}
+                        {% else %}
+                            Link
+                        {% endif %}
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

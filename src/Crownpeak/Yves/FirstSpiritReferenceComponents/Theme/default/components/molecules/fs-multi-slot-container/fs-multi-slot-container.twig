@@ -1,0 +1,43 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-multi-slot-container'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+
+
+{% block body %}
+    {# breakpoint default, can be overwritten in FS via hidden field on the section template #}
+    {% set breakpoint = 4 %}
+    {% if data.fsBlockData.data.breakpoint is defined and data.fsBlockData.data.breakpoint is not empty %}
+        {% set breakpoint = data.fsBlockData.data.breakpoint %}
+    {% endif %}
+
+    {% if data.fsBlockData.data.st_title is defined and data.fsBlockData.data.st_title is not empty %}
+        <h2>{{ data.fsBlockData.data.st_title | raw }}</h2>
+    {% endif %}
+    <div class="container">
+        {% if data.fsBlockData.data.st_nTeaserItems is defined %}
+            {% for teaserItem in data.fsBlockData.data.st_nTeaserItems %}
+                {% if teaserItem.sectionType == 'product_teaser' %}
+                    {% include molecule( 'fs-multi-slot-container-item-product' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem }} only %}
+                {% endif %}
+                {% if teaserItem.sectionType == 'category_teaser' %}
+                    {% include molecule( 'fs-multi-slot-container-item-category' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem }} only %}
+                {% endif %}
+
+                {# divider after 4 elements #}
+                {% if loop.index is divisible by(breakpoint) and not loop.last %}
+                    </div>
+                    <div class="container">
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% endblock %}
