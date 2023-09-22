@@ -28,9 +28,8 @@
                             {% if  data.fsBlockData.data.st_interactive_image.media.previewId is defined %} data-preview-id="{{ data.fsBlockData.data.st_interactive_image.media.previewId }}"{% endif %}
                              data-tpp-context-image-resolution="CONTENT_IMAGE"
                              src="{{ data.fsBlockData.data.st_interactive_image.media.resolutions.ORIGINAL.url }}"
-                            {% if data.fsBlockData.data.st_image_alt_text is not null %}
-                             alt="{{ data.fsBlockData.data.st_image_alt_text }}">
-                        {% endif %}
+                             {% if data.fsBlockData.data.st_image_alt_text is not null %} alt="{{ data.fsBlockData.data.st_image_alt_text }}"{% endif %}
+			>
                         <div class="overlays fs-theme">
                             {% for area in data.fsBlockData.data.st_interactive_image.areas %}
                                 {% set imgWidth =  data.fsBlockData.data.st_interactive_image.media.resolutions.ORIGINAL.width %}
