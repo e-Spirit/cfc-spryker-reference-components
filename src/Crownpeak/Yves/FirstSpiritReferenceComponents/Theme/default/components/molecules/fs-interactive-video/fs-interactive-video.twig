@@ -19,7 +19,7 @@
                             {% set url = item.sectionType == "interactive_video_product_item" ? firstSpiritProductData(item.data.st_product.value[0].identifier).url : null %}
                             {% if url is not null and url is not empty %}
                                 <a href="{{url}}">
-                                    {% if item.data.st_picture is defined %}
+                                    {% if item.data.st_picture is defined and item.data.st_picture.resolutions is defined %}
                                         {% set ambilight = item.data.st_ambilight is defined and item.data.st_ambilight %}
                                         <span class="picture{{ ambilight ? ' with-ambilight' : '' }}" style="background-image: url('{{ item.data.st_picture.resolutions.ORIGINAL.url }}');"></span>
                                     {% else %}
@@ -45,7 +45,7 @@
                                     {% endif %}
                                 </a>
                             {% else %}
-                                {% if item.data.st_picture is defined %}
+                                {% if item.data.st_picture is defined and item.data.st_picture.resolutions is defined%}
                                         {% set ambilight = item.data.st_ambilight is defined and item.data.st_ambilight %}
                                         <span class="picture{{ ambilight ? ' with-ambilight' : '' }}" style="background-image: url('{{ item.data.st_picture.resolutions.ORIGINAL.url }}');"></span>
                                 {% endif %}
