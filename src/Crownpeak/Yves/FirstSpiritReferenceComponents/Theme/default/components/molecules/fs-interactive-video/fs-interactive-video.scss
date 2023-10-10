@@ -1,0 +1,66 @@
+fs-youtube-player {
+  background: linear-gradient(180deg, #efefef 0%, #fff 100%);
+}
+fs-youtube-player [data-time] {
+  text-align: center;
+  user-select: none;
+  font-size: 1.25em;
+  line-height: 1.4;
+}
+@media (max-width: 75.25rem) {
+  fs-youtube-player [data-time] {
+    font-size: 1.5vw;
+  }
+}
+@media (max-width: 600px) {
+  fs-youtube-player [data-time] {
+    font-size: 3.5vw;
+  }
+}
+fs-youtube-player a {
+  display: flex;
+  text-decoration: none !important;
+  cursor: pointer;
+  color: inherit;
+  padding: 1rem;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  text-align: center;
+  background: #fff;
+}
+fs-youtube-player a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+fs-youtube-player .picture {
+  flex: 1;
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  margin: 15px 30px 0;
+}
+
+fs-youtube-player a .picture {
+  margin: 15px 15px 0;
+}
+
+fs-youtube-player .picture.with-ambilight::before,
+fs-youtube-player .picture.with-ambilight::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+}
+fs-youtube-player .picture.with-ambilight::before {
+  filter: blur(15px);
+}
+
+fs-youtube-player .description {
+  margin: 1em 0;
+}
