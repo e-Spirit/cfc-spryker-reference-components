@@ -1,0 +1,66 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-interactive-video',
+    tag: 'fs-interactive-video'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+{% block body %}
+    <div class="container">
+        {% if data.fsBlockData.data.st_youtubeVideo is defined %}
+            <fs-youtube-player video-id="{{ data.fsBlockData.data.st_youtubeVideo.value[0].value.id }}" nocookie muted>
+                {% if data.fsBlockData.data.st_catalog is defined %}
+                    {% for item in data.fsBlockData.data.st_catalog %}
+                        <div data-time="{{ item.data.st_time }}">
+                            {% set url = item.sectionType == "interactive_video_product_item" ? firstSpiritProductData(item.data.st_product.value[0].identifier).url : null %}
+                            {% if url is not null and url is not empty %}
+                                <a href="{{url}}">
+                                    {% if item.data.st_picture is defined and item.data.st_picture.resolutions is defined %}
+                                        {% set ambilight = item.data.st_ambilight is defined and item.data.st_ambilight %}
+                                        <span class="picture{{ ambilight ? ' with-ambilight' : '' }}" style="background-image: url('{{ item.data.st_picture.resolutions.ORIGINAL.url }}');"></span>
+                                    {% else %}
+                                        {% set productImages = firstSpiritProductData(item.data.st_product.value[0].identifier).images %}
+                                        {% set image = productImages is not null ? productImages.offsetGet(0).externalUrlSmall() : null %}
+                                        {% if image is not null %}
+                                            <span class="picture" style="background-image: url('{{ image }}');"></span>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if item.data.st_text is defined and item.data.st_text is not empty %}
+                                        {{ firstSpiritRichText(item.data.st_text) | raw }}
+                                    {% else %}
+                                        <div class="description">
+                                            {% set productName = firstSpiritProductData(item.data.st_product.value[0].identifier).name %}
+                                            {% if productName is not null %}
+                                                <b>{{ productName | raw }}</b>
+                                            {% endif %}
+                                            {% set productPrice = firstSpiritProductData(item.data.st_product.value[0].identifier).price %}
+                                            {% if productPrice is not null %}
+                                                <br /><i>{{ productPrice | money }}</i>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </a>
+                            {% else %}
+                                {% if item.data.st_image is defined and item.data.st_image.resolutions is defined %}
+                                        {% set ambilight = item.data.st_ambilight is defined and item.data.st_ambilight %}
+                                        <span class="picture{{ ambilight ? ' with-ambilight' : '' }}" style="background-image: url('{{ item.data.st_image.resolutions.ORIGINAL.url }}');"></span>
+                                {% endif %}
+                                {% if item.data.st_headline is defined %}
+                                    {{ item.data.st_headline | raw }}
+                                {% endif %}
+                                {% if item.data.st_text is defined %}
+                                    {{ firstSpiritRichText(item.data.st_text) | raw }}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </fs-youtube-player>
+        {% endif %}
+    </div>
+    <script type="module" src="https://www.unpkg.com/fs-youtube-player"></script>
+{% endblock %}
