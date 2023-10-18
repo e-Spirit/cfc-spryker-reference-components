@@ -1,0 +1,29 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-teaser-grid'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+{% block body %}
+    <div class="container">
+        {% if data.fsBlockData.data.st_title is defined and data.fsBlockData.data.st_title is not empty %}
+            <h2 class="fs-teaser-grid-headline">{{ data.fsBlockData.data.st_title }}</h2>
+        {% endif %}
+        <div class="fs-teaser-grid-container"{% if data.fsBlockData.previewId is defined and data.fsBlockData.previewId is not empty %} data-preview-id="{{data.fsBlockData.previewId}}"{% endif %}>
+            {% for item in data.fsBlockData.data.st_items %}
+                <div class="fs-teaser-grid-item"
+                    {% if item.previewId is defined and item.previewId is not empty %} data-preview-id="{{item.previewId}}"{% endif %}
+                    {% if item.data.cols is defined and item.data.cols is not empty %} data-cols="{{ item.data.cols }}"{% endif %}
+                    {% if item.data.rows is defined and item.data.rows is not empty %} data-rows="{{ item.data.rows }}"{% endif %}
+                    {% if item.data.variant is defined and item.data.variant.key is defined and item.data.variant.key is not empty %} data-variant="{{ item.data.variant.key }}"{% endif %}>
+                    {% include molecule( 'fs-teaser-grid-item' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: item }} only %}
+
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

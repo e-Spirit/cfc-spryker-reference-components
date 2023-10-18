@@ -1,0 +1,55 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-teaser-grid-item'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+{% block body %}
+    {% if data.fsBlockData.data.link is defined and data.fsBlockData.data.link is not empty %}
+        {% set url -%}
+            TODO: Link
+            {# {%- include template('link', 'FirstSpiritPreview') with {link:data.fsBlockData.link} -%} #}
+        {%- endset %}
+        {% set target = '' %}
+        {% set linkText = '' %}
+        {# {% set target -%}
+            {% if data.fsBlockData.link.type is defined and data.fsBlockData.link.type == "external" %} target="_blank"{% endif %}
+        {%- endset %}
+        {% set linkText -%}
+            {% if data.fsBlockData.link.text is defined and data.fsBlockData.link.text is not empty %}{{ data.fsBlockData.link.text | raw }}{% endif %}
+        {%- endset %} #}
+    {% endif %}
+    <section>
+        {% if url is defined and url is not empty %}<a href="{{url}}" {{ target }}>{% else %}<span>{% endif %}
+        <figure{% if data.fsBlockData.data.variant is defined and data.fsBlockData.data.variant.key is not empty %} class="media-{{ data.fsBlockData.data.variant.key }}"{% endif %}>
+            {% if data.fsBlockData.data.image is not empty %}
+                <img src="{{ data.fsBlockData.data.image.resolutions.ORIGINAL.url }}"
+                    {% if data.fsBlockData.data.image.previewId is defined %}
+                        data-preview-id="{{ data.fsBlockData.data.image.previewId }}"
+                        data-tpp-context-image-resolution="CONTENT_IMAGE"
+                    {% endif %}>
+            {% elseif data.fsBlockData.data.videoId is not empty %}
+                <fs-youtube-player video-id="{{ data.fsBlockData.data.videoId }}" nocookie muted no-items></fs-youtube-player>
+                <script type="module" src="https://www.unpkg.com/fs-youtube-player"></script>
+            {% endif %}
+            {% if (data.fsBlockData.data.headline is not empty) or (data.fsBlockData.data.subline is not empty) or (data.fsBlockData.data.text is not empty) %}
+                <figcaption>
+                    {% if (data.fsBlockData.data.headline is not empty) or (data.fsBlockData.data.subline is not empty) %}
+                        <hgroup>
+                            {% if data.fsBlockData.data.headline is not empty %}<h2>{{ data.fsBlockData.data.headline | raw }}</h2>{% endif %}
+                            {% if data.fsBlockData.data.subline is not empty %}<h3>{{ data.fsBlockData.data.subline | raw }}</h3>{% endif %}
+                        </hgroup>
+                        {% if data.fsBlockData.data.text is not empty %}
+                            <p>{{ data.fsBlockData.data.text | raw }}</p>
+                        {% endif %}
+                    {% endif %}
+                </figcaption>
+            {% endif %}
+        </figure>
+        {% if url is defined and url is not empty %}</a>{% else %}</span>{% endif %}
+    </section>
+{% endblock %}
