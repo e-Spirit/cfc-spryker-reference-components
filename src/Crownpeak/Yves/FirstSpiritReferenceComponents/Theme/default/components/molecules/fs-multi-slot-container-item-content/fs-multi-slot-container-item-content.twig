@@ -1,0 +1,56 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'fs-n-teaser-item-content',
+    tag: 'article'
+} %}
+
+{% define data = {
+    fsBlockData: []
+} %}
+
+
+{% block body %}
+<div class="fs-n-teaser-image">
+    {% if data.fsBlockData.data.st_picture is defined and data.fsBlockData.data.st_picture is not empty %}
+        {% set pageId = data.fsBlockData.data.st_link.data.lt_link.data.lt_pageref.referenceId %}
+        {% set previewId = data.fsBlockData.previewId %}
+        {% set url = firstSpiritContentLink(pageId, previewId).url %}
+        <a href="{{url}}">
+        <picture
+            data-preview-id="{{ data.fsBlockData.data.st_picture.previewId }}"
+            data-tpp-context-image-resolution="TEASER_IMAGE">
+                {% for resolution in data.fsBlockData.data.st_picture.resolutions %}
+                    <source srcset="{{resolution.url}}" media="(max-width: {{resolution.width}}px)" />
+                {% endfor %}
+
+
+                <img src="{{ data.fsBlockData.data.st_picture.resolutions.ORIGINAL.url }}"
+                    alt="{% if data.fsBlockData.data.st_picture.description is not null %}{{data.fsBlockData.data.st_picture.description}}{% endif %}">
+        </picture>
+        </a>
+    {% endif %}
+</div>
+<div class="fs-n-teaser-content">
+    {% set contentHeadline = data.fsBlockData.data.st_headline %}
+    {% if contentHeadline is defined and contentHeadline is not empty %}
+        <h3>{{ contentHeadline | raw }}</h3>
+    {% endif %}
+    {% set contentDescription = data.fsBlockData.data.st_subline %}
+    {% if contentDescription is defined and contentDescription is not empty %}
+        <h4>{{ contentDescription | raw }}</h4>
+    {% endif %}
+    {% set contentText = data.fsBlockData.data.st_text %}
+    {% if contentText is defined and contentText is not empty %}
+        <p>{{ contentText | raw }}</p>
+    {% endif %}
+    {% set linkText = data.fsBlockData.data.st_link.data.lt_text %}
+    <a href="{{url}}" class="fs-btn-link">
+        {% if linkText is defined and linkText is not empty %}
+            {{ linkText | raw }}
+        {% else %}
+            Link
+        {% endif %}
+    </a>
+</div>
+{% endblock %}
