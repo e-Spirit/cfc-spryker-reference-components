@@ -9,14 +9,24 @@
     fsBlockData: []
 } %}
 
+{% set hasLink = false %}
 
 {% block body %}
+
+{% if data.fsBlockData.data.st_link is not null %}
+    {% set pageId = data.fsBlockData.data.st_link.data.lt_link.data.lt_pageref.referenceId %}
+    {% set previewId = data.fsBlockData.previewId %}
+    {% set url = firstSpiritContentLink(pageId, previewId).url %}
+    {% set hasLink = true %}
+{% endif %}
+
 <div class="fs-n-teaser-image">
     {% if data.fsBlockData.data.st_picture is defined and data.fsBlockData.data.st_picture is not empty %}
-        {% set pageId = data.fsBlockData.data.st_link.data.lt_link.data.lt_pageref.referenceId %}
-        {% set previewId = data.fsBlockData.previewId %}
-        {% set url = firstSpiritContentLink(pageId, previewId).url %}
-        <a href="{{url}}">
+        {% if hasLink %}
+            <a href="{{url}}">
+        {% else %}
+            <a href="#">
+        {% endif %}
         <picture
             data-preview-id="{{ data.fsBlockData.data.st_picture.previewId }}"
             data-tpp-context-image-resolution="TEASER_IMAGE">
@@ -44,13 +54,20 @@
     {% if contentText is defined and contentText is not empty %}
         <p>{{ contentText | raw }}</p>
     {% endif %}
-    {% set linkText = data.fsBlockData.data.st_link.data.lt_text %}
-    <a href="{{url}}" class="fs-btn-link">
-        {% if linkText is defined and linkText is not empty %}
-            {{ linkText | raw }}
-        {% else %}
-            Link
-        {% endif %}
-    </a>
+    {% if data.fsBlockData.data.st_link is not null %}
+        {% set linkText = data.fsBlockData.data.st_link.data.lt_text %}
+            {% if hasLink %}
+                <a href="{{url}}" class="fs-btn-link">
+            {% else %}
+                <a href="#" class="fs-btn-link">
+            {% endif %}
+            {% if linkText is defined and linkText is not empty %}
+                {{ linkText | raw }}
+            {% else %}
+                Link
+            {% endif %}
+        </a>
+    {% endif %}
 </div>
 {% endblock %}
+
