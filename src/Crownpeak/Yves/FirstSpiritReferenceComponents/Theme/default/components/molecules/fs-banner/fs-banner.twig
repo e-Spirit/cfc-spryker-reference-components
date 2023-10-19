@@ -10,14 +10,9 @@
 } %}
 
 {# Used to determine if a starting a tag has been inserted to close it afterwards #}
-{% set hasLink = false %}
+{% set url = null %}
 
 {% block body %}
-    {% set url -%}
-        {# {%- if data.fsBlockData.data.st_link is defined and data.fsBlockData.data.st_link is not empty -%} #}
-        {# {%- include template('link', 'FirstSpiritPreview') with { link: data.fsBlockData.link } -%} #}
-        {# {%- endif -%} #}
-    {%- endset %}
 
     <div class="fs-banner">
         <figure
@@ -25,23 +20,10 @@
             {% if data.fsBlockData.data.st_variant is not null %} data-variant="{{data.fsBlockData.data.st_variant.key}}"{% endif %}
         >
             {% if data.fsBlockData.data.st_link is not null %}
-                {% if data.fsBlockData.data.st_link.template == "external_link" %}
-                    <a href="{{ data.fsBlockData.data.st_link.data.lt_linkUrl }}" target="_blank">
-                    {% set hasLink = true %}
-                {% endif %}
-                {% if data.fsBlockData.data.st_link.template == "product_link" %}
-                    {% set product = firstSpiritProductData(data.fsBlockData.data.st_link.data.lt_product.value[0].identifier) %}
-                    {% if product is not null %}
-                        <a href="{{ product.url }}">
-                        {% set hasLink = true %}
-                    {% endif %}
-                {% endif %}
-                {% if data.fsBlockData.data.st_link.template == "category_link" %}
-                    {% set category = firstSpiritCategoryData(data.fsBlockData.data.st_link.data.lt_category.value[0].identifier) %}
-                    {% if category is not null %}
-                        <a href="{{ category.url }}">
-                        {% set hasLink = true %}
-                    {% endif %}
+                {% set url = firstSpiritGetLinkUrl(data.fsBlockData.data.st_link) %}
+
+                {% if url is defined %}
+                    <a href="{{ url }}" {{firstSpiritGetLinkTarget(data.fsBlockData.data.st_link)}}>
                 {% endif %}
             {% endif %}
 
@@ -58,7 +40,7 @@
                          alt="{% if data.fsBlockData.data.st_image_alt_text is not null %}{{data.fsBlockData.data.st_image_alt_text}}{% endif %}">
                 </picture>
 
-                {% if hasLink == true %}</a>{% endif %}
+                {% if url is defined %}</a>{% endif %}
 
             {% if (data.fsBlockData.data.st_title is not empty) or (data.fsBlockData.data.st_subtitle is not empty) %}
                 <figcaption>

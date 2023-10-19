@@ -9,19 +9,12 @@
 } %}
 
 {% block body %}
+    {% set url = '' %}
+    {% set target = '' %}
     {% if data.fsBlockData.data.link is defined and data.fsBlockData.data.link is not empty %}
-        {% set url -%}
-            TODO: Link
-            {# {%- include template('link', 'FirstSpiritPreview') with {link:data.fsBlockData.link} -%} #}
-        {%- endset %}
-        {% set target = '' %}
-        {% set linkText = '' %}
-        {# {% set target -%}
-            {% if data.fsBlockData.link.type is defined and data.fsBlockData.link.type == "external" %} target="_blank"{% endif %}
-        {%- endset %}
-        {% set linkText -%}
-            {% if data.fsBlockData.link.text is defined and data.fsBlockData.link.text is not empty %}{{ data.fsBlockData.link.text | raw }}{% endif %}
-        {%- endset %} #}
+        {% set url = firstSpiritGetLinkUrl(data.fsBlockData.data.link) %}
+        {% set target = firstSpiritGetLinkTarget(data.fsBlockData.data.link) %}
+
     {% endif %}
     <section>
         {% if url is defined and url is not empty %}<a href="{{url}}" {{ target }}>{% else %}<span>{% endif %}
