@@ -10,19 +10,40 @@
 } %}
 
 {% set hasLink = false %}
+{% set hasTargetBlank = false %}
 
 {% block body %}
 
 {% if data.fsBlockData.data.st_link is not null %}
-    {% set pageId = data.fsBlockData.data.st_link.data.lt_link.data.lt_pageref.referenceId %}
-    {% set previewId = data.fsBlockData.previewId %}
-    {% set url = firstSpiritContentLink(pageId, previewId).url %}
-    {% set hasLink = true %}
+    {% if data.fsBlockData.data.st_link.data.lt_link.template == "external_link" %}
+        {% set url = data.fsBlockData.data.st_link.data.lt_link.data.lt_linkUrl %}
+        {% set hasLink = true %}
+        {% set hasTargetBlank = true %}
+    {% elseif data.fsBlockData.data.st_link.data.lt_link.template == "product_link" %}
+        {% set product = firstSpiritProductData(data.fsBlockData.data.st_link.data.lt_link.data.lt_product.value[0].identifier) %}
+        {% if product is not null %}
+            {% set url = product.url %}
+            {% set hasLink = true %}
+        {% endif %}
+    {% elseif data.fsBlockData.data.st_link.data.lt_link.template == "category_link" %}
+        {% set category = firstSpiritCategoryData(data.fsBlockData.data.st_link.data.lt_link.data.lt_category.value[0].identifier) %}
+        {% if category is not null %}
+            {% set url = category.url %}
+            {% set hasLink = true %}
+        {% endif %}
+    {% else %}
+        {% set pageId = data.fsBlockData.data.st_link.data.lt_link.data.lt_pageref.referenceId %}
+        {% set previewId = data.fsBlockData.previewId %}
+        {% set url = firstSpiritContentLink(pageId, previewId).url %}
+        {% set hasLink = true %}
+    {% endif %}
 {% endif %}
 
 <div class="fs-n-teaser-image">
     {% if data.fsBlockData.data.st_picture is defined and data.fsBlockData.data.st_picture is not empty %}
-        {% if hasLink %}
+        {% if hasLink and hasTargetBlank %}
+            <a href="{{url}}" target="_blank">
+        {% elseif hasLink %}
             <a href="{{url}}">
         {% else %}
             <a href="#">
@@ -56,7 +77,9 @@
     {% endif %}
     {% if data.fsBlockData.data.st_link is not null %}
         {% set linkText = data.fsBlockData.data.st_link.data.lt_text %}
-            {% if hasLink %}
+            {% if hasLink and hasTargetBlank %}
+                <a href="{{url}}" target="_blank" class="fs-btn-link">
+            {% elseif hasLink %}
                 <a href="{{url}}" class="fs-btn-link">
             {% else %}
                 <a href="#" class="fs-btn-link">
@@ -70,4 +93,3 @@
     {% endif %}
 </div>
 {% endblock %}
-
