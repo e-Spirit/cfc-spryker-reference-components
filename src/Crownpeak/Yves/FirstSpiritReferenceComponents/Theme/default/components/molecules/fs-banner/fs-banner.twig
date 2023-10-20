@@ -23,6 +23,7 @@
         <figure
             {% if data.fsBlockData.index is defined and data.fsBlockData.index is not empty %} data-preview-id="#{{data.fsBlockData.index}}"{% endif %}
             {% if data.fsBlockData.data.st_variant is not null %} data-variant="{{data.fsBlockData.data.st_variant.key}}"{% endif %}
+            data-variant-editor-name="st_variant"
         >
             {% if data.fsBlockData.data.st_link is not null %}
                 {% if data.fsBlockData.data.st_link.template == "external_link" %}
