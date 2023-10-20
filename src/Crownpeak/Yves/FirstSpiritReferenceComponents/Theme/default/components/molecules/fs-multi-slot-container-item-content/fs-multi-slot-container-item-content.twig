@@ -9,45 +9,26 @@
     fsBlockData: []
 } %}
 
-{% set hasLink = false %}
-{% set hasTargetBlank = false %}
+{# Used to determine if a starting a tag has been inserted to close it afterwards #}
+{% set url = null %}
 
 {% block body %}
 
 {% if data.fsBlockData.data.st_link is not null %}
-    {% if data.fsBlockData.data.st_link.data.lt_link.template == "external_link" %}
-        {% set url = data.fsBlockData.data.st_link.data.lt_link.data.lt_linkUrl %}
-        {% set hasLink = true %}
-        {% set hasTargetBlank = true %}
-    {% elseif data.fsBlockData.data.st_link.data.lt_link.template == "product_link" %}
-        {% set product = firstSpiritProductData(data.fsBlockData.data.st_link.data.lt_link.data.lt_product.value[0].identifier) %}
-        {% if product is not null %}
-            {% set url = product.url %}
-            {% set hasLink = true %}
-        {% endif %}
-    {% elseif data.fsBlockData.data.st_link.data.lt_link.template == "category_link" %}
-        {% set category = firstSpiritCategoryData(data.fsBlockData.data.st_link.data.lt_link.data.lt_category.value[0].identifier) %}
-        {% if category is not null %}
-            {% set url = category.url %}
-            {% set hasLink = true %}
-        {% endif %}
-    {% else %}
-        {% set pageId = data.fsBlockData.data.st_link.data.lt_link.data.lt_pageref.referenceId %}
-        {% set previewId = data.fsBlockData.previewId %}
-        {% set url = firstSpiritContentLink(pageId, previewId).url %}
-        {% set hasLink = true %}
-    {% endif %}
+    {% set url = firstSpiritGetLinkUrl(data.fsBlockData.data.st_link) %}
 {% endif %}
 
 <div class="fs-n-teaser-image">
     {% if data.fsBlockData.data.st_picture is defined and data.fsBlockData.data.st_picture is not empty %}
-        {% if hasLink and hasTargetBlank %}
-            <a href="{{url}}" target="_blank">
-        {% elseif hasLink %}
-            <a href="{{url}}">
-        {% else %}
-            <a href="#">
+
+        {% if data.fsBlockData.data.st_link is not null %}
+            {% set url = firstSpiritGetLinkUrl(data.fsBlockData.data.st_link) %}
+
+            {% if url is defined %}
+                <a href="{{ url }}" {{firstSpiritGetLinkTarget(data.fsBlockData.data.st_link)}}>
+            {% endif %}
         {% endif %}
+        
         <picture
             data-preview-id="{{ data.fsBlockData.data.st_picture.previewId }}"
             data-tpp-context-image-resolution="TEASER_IMAGE">
@@ -59,7 +40,9 @@
                 <img src="{{ data.fsBlockData.data.st_picture.resolutions.ORIGINAL.url }}"
                     alt="{% if data.fsBlockData.data.st_picture.description is not null %}{{data.fsBlockData.data.st_picture.description}}{% endif %}">
         </picture>
-        </a>
+        {% if url is defined %}
+            </a>
+        {% endif %}
     {% endif %}
 </div>
 <div class="fs-n-teaser-content">
@@ -75,15 +58,10 @@
     {% if contentText is defined and contentText is not empty %}
         <p>{{ contentText | raw }}</p>
     {% endif %}
-    {% if data.fsBlockData.data.st_link is not null %}
+    {% if url is defined %}
         {% set linkText = data.fsBlockData.data.st_link.data.lt_text %}
-            {% if hasLink and hasTargetBlank %}
-                <a href="{{url}}" target="_blank" class="fs-btn-link">
-            {% elseif hasLink %}
-                <a href="{{url}}" class="fs-btn-link">
-            {% else %}
-                <a href="#" class="fs-btn-link">
-            {% endif %}
+        <a href="{{ url }}" {{firstSpiritGetLinkTarget(data.fsBlockData.data.st_link)}} class="fs-btn-link">
+
             {% if linkText is defined and linkText is not empty %}
                 {{ linkText | raw }}
             {% else %}

@@ -29,6 +29,9 @@
                 {% if teaserItem.sectionType == 'category_teaser' %}
                     {% include molecule( 'fs-multi-slot-container-item-category' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem }} only %}
                 {% endif %}
+                {% if teaserItem.sectionType == 'content_teaser' %}
+                    {% include molecule( 'fs-multi-slot-container-item-content' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem }} only %}
+                {% endif %}
 
                 {# divider after 4 elements #}
                 {% if loop.index is divisible by(breakpoint) and not loop.last %}
