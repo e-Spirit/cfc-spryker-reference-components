@@ -29,6 +29,13 @@
                     <a href="{{ data.fsBlockData.data.st_link.data.lt_linkUrl }}" target="_blank">
                     {% set hasLink = true %}
                 {% endif %}
+                {% if data.fsBlockData.data.st_link.template == "internal_link" %}
+                    {% set pageId = data.fsBlockData.data.st_link.data.lt_pageref.referenceId %}
+                    {% set previewId = data.fsBlockData.previewId %}
+                    {% set url = firstSpiritContentLink(pageId, previewId).url %}
+                    <a href="{{url}}">
+                    {% set hasLink = true %}
+                {% endif %}
                 {% if data.fsBlockData.data.st_link.template == "product_link" %}
                     {% set product = firstSpiritProductData(data.fsBlockData.data.st_link.data.lt_product.value[0].identifier) %}
                     {% if product is not null %}
