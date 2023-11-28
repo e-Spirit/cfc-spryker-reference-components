@@ -5,6 +5,10 @@
     tag: 'article'
 } %}
 
+{% define attributes = {
+    'data-preview-id': '#' ~ data.index
+} %}
+
 {% define data = {
     fsBlockData: []
 } %}

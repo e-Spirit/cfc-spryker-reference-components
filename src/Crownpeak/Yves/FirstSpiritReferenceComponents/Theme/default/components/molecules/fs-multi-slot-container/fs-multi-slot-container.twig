@@ -20,17 +20,17 @@
     {% if data.fsBlockData.data.st_title is defined and data.fsBlockData.data.st_title is not empty %}
         <h2>{{ data.fsBlockData.data.st_title | raw }}</h2>
     {% endif %}
-    <div class="container">
+    <div class="container" data-preview-id="#st_nTeaserItems">
         {% if data.fsBlockData.data.st_nTeaserItems is defined %}
             {% for teaserItem in data.fsBlockData.data.st_nTeaserItems %}
                 {% if teaserItem.sectionType == 'product_teaser' %}
-                    {% include molecule( 'fs-multi-slot-container-item-product' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem }} only %}
+                    {% include molecule( 'fs-multi-slot-container-item-product' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem, index: loop.index0 }} only %}
                 {% endif %}
                 {% if teaserItem.sectionType == 'category_teaser' %}
-                    {% include molecule( 'fs-multi-slot-container-item-category' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem }} only %}
+                    {% include molecule( 'fs-multi-slot-container-item-category' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem, index: loop.index0 }} only %}
                 {% endif %}
                 {% if teaserItem.sectionType == 'content_teaser' %}
-                    {% include molecule( 'fs-multi-slot-container-item-content' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem }} only %}
+                    {% include molecule( 'fs-multi-slot-container-item-content' , 'Crownpeak:FirstSpiritReferenceComponents') with{ data: { fsBlockData: teaserItem, index: loop.index0 }} only %}
                 {% endif %}
 
                 {# divider after 4 elements #}
