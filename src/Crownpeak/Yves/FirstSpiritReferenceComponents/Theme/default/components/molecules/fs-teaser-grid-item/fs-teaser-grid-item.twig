@@ -25,8 +25,8 @@
                         data-preview-id="{{ data.fsBlockData.data.image.previewId }}"
                         data-tpp-context-image-resolution="CONTENT_IMAGE"
                     {% endif %}>
-            {% elseif data.fsBlockData.data.videoId is not empty %}
-                <fs-youtube-player video-id="{{ data.fsBlockData.data.videoId }}" nocookie muted no-items></fs-youtube-player>
+            {% elseif data.fsBlockData.data.videoId is not empty and data.fsBlockData.data.videoId.value[0].identifier is defined %}
+                <fs-youtube-player video-id="{{ data.fsBlockData.data.videoId.value[0].identifier }}" nocookie muted no-items></fs-youtube-player>
                 <script type="module" src="https://www.unpkg.com/fs-youtube-player"></script>
             {% endif %}
             {% if (data.fsBlockData.data.headline is not empty) or (data.fsBlockData.data.subline is not empty) or (data.fsBlockData.data.text is not empty) %}
