@@ -62,7 +62,7 @@
     {% if contentText is defined and contentText is not empty %}
         <p>{{ contentText | raw }}</p>
     {% endif %}
-    {% if url is defined %}
+    {% if url is defined and url is not empty %}
         {% set linkText = data.fsBlockData.data.st_link.data.lt_text %}
         <a href="{{ url }}" {{firstSpiritGetLinkTarget(data.fsBlockData.data.st_link)}} class="fs-btn-link">
 

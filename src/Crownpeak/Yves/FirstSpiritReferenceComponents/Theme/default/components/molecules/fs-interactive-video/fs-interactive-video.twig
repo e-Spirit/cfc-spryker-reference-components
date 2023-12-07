@@ -11,7 +11,7 @@
 
 {% block body %}
     <div class="container">
-        {% if data.fsBlockData.data.st_youtubeVideo is defined %}
+        {% if data.fsBlockData.data.st_youtubeVideo is defined and data.fsBlockData.data.st_youtubeVideo.value is not empty %}
             <fs-youtube-player video-id="{{ data.fsBlockData.data.st_youtubeVideo.value[0].value.id }}" nocookie muted>
                 {% if data.fsBlockData.data.st_catalog is defined %}
                     {% for item in data.fsBlockData.data.st_catalog %}
